@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:15                       # matches the Postgres 15 you already use
+    ports:
+      - "15432:5432"                         # Windows' 15432 -> container's 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: studentdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d studentdb -h 127.0.0.1"]  # -h forces a TCP check
+      interval: 2s
+      retries: 10
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/studentdb
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
