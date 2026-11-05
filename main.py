@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query, Path, Depends, HTTPException
 import os 
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -114,7 +115,12 @@ def get_db():
 from sqlalchemy.orm import Session
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_headers=["*"],
+    allow_methods=["*"]
+)
 # GET one student
 # Depends(get_db) means : before running this endpoint, run the get_db() function
 @app.get('/student/{student_id}', response_model = StudentResponse, tags = ['GET ROUTE'])
