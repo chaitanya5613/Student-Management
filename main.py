@@ -115,11 +115,12 @@ def get_db():
 from sqlalchemy.orm import Session
 
 app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_methods=["*"],
     allow_headers=["*"],
-    allow_methods=["*"]
 )
 # GET one student
 # Depends(get_db) means : before running this endpoint, run the get_db() function
@@ -245,6 +246,6 @@ def get_all(
     return {
         "page": page,
         "limit": limit,
-        "total_student": total_students,
+        "total_students": total_students,
         "students": student
     }
