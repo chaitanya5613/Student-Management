@@ -115,7 +115,6 @@ def get_db():
 from sqlalchemy.orm import Session
 
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -136,7 +135,7 @@ def get_student(
     return student
 
 # step 10 - POST - create a student
-@app.post('/create_student', response_model=StudentResponse, status_code=201, tags = ['POST ROUTE'])
+@app.post('/CreateStudent', response_model=StudentResponse, status_code=201, tags = ['POST ROUTE'])
 def create_student(
     student : StudentCreate,
     db : Session = Depends(get_db)):
